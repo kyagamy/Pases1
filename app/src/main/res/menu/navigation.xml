@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:icon="@drawable/ico_soli"
+        android:id="@+id/nav_my_solis"
+        android:title="@string/title_soli"/>
+
+    <item
+        android:icon="@drawable/ico_add_soli"
+        android:id="@+id/nav_add_soli"
+        android:title="@string/title_my_soli"/>
+    <item
+        android:icon="@drawable/ico_scan"
+        android:id="@+id/nav_scan"
+        android:title="Codigos"/>
+    <item
+        android:icon="@drawable/ico_setting"
+        android:id="@+id/nav_config"
+        android:title="@string/title_config"/>
+
+</menu>

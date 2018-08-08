@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Algo XD</string>
+    <string name="turn_off_flashlight">Prender el foco</string>
+    <string name="turn_on_flashlight">Apagar el foco xd</string>
+    <string name="title_activity_main">Escanear uwu</string>
+    <string name="message">Saca el codigo QR bato.</string>
+    <string name="title_activity_login">Pases de salida</string>
+    <string name="title_soli">Solicitudes</string>
+    <string name="title_my_soli">Crear solicitudes  </string>
+    <string name="title_config">Ajustes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

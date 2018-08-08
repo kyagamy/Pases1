@@ -1,0 +1,79 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lords.pases.fragments.FragmentAddSoli">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/et_motivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="116dp"
+                        android:ems="10"
+                        android:hint="Ingrese el motivo de la solicitud"
+                        android:inputType="textMultiLine" />
+
+                    <Button
+                        android:drawableLeft="@drawable/ico_calendar_color"
+                        android:gravity="left"
+                        android:id="@+id/btn_set_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Asignar Fecha" />
+
+                    <Button
+                        android:drawableLeft="@drawable/ico_clock_color2"
+                        android:gravity="left"
+                        android:id="@+id/btn_set_time_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Hora de salida" />
+
+                    <Button
+                        android:drawableLeft="@drawable/ico_clock_color2"
+                        android:gravity="left"
+                        android:id="@+id/btn_set_time_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Hora de regreso" />
+
+                    <Button
+                        android:id="@+id/btn_send_soli"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Enviar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/et_reg_pass" />
+
+                </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>
