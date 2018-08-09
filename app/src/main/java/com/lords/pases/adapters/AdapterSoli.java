@@ -15,10 +15,11 @@ import com.lords.pases.entidades.Solicitud;
 
 import java.util.ArrayList;
 
-public class    AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCategory> {
+public class   AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCategory> {
 
     private ArrayList<Solicitud> list;
     private Context mCtx;
+    private String xxx;
 
     public AdapterSoli(ArrayList list,Context c) {
         this.list = list;
@@ -80,7 +81,7 @@ public class    AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderC
 
         public ViewHolderCategory(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.Soli_sub_title);
+            name = itemView.findViewById(R.id.tv_subtitle_item);
             optionButton = itemView.findViewById(R.id.textViewOptions);
         }
 

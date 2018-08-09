@@ -3,106 +3,128 @@ package com.lords.pases.entidades;
 import net.sourceforge.jtds.jdbc.DateTime;
 
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.Time;
 
 public class Solicitud {
 
-    private int idSolicitud, idEmpleado;
-    private String estado, motivo;
-    Date fechaPedida;
-    Time horaSolicitud, horaInicio, horaFin, Regreso;
-    DateTime fechaElaborada;
 
-    public int getIdSolicitud() {
-        return idSolicitud;
+
+        int id;
+        String Motivo,FechaCreada,Estado,Respuesta,Salida,Regreso;
+        Date dias_solicitado;
+        Time horaDeSalida,Horaderegreso,HorapedidaSalida,HoraPedidaRegreso;
+
+    public Time getHorapedidaSalida() {
+        return HorapedidaSalida;
     }
 
-    public void setIdSolicitud(int idSolicitud) {
-        this.idSolicitud = idSolicitud;
+    public void setHorapedidaSalida(Time horapedidaSalida) {
+        HorapedidaSalida = horapedidaSalida;
     }
 
-    public int getIdEmpleado() {
-        return idEmpleado;
+    public Time getHoraPedidaRegreso() {
+        return HoraPedidaRegreso;
     }
 
-    public void setIdEmpleado(int idEmpleado) {
-        this.idEmpleado = idEmpleado;
+    public void setHoraPedidaRegreso(Time horaPedidaRegreso) {
+        HoraPedidaRegreso = horaPedidaRegreso;
     }
 
-    public String getEstado() {
-        return estado;
+    public int getId() {
+        return id;
+
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMotivo() {
-        return motivo;
+        return Motivo;
     }
 
     public void setMotivo(String motivo) {
-        this.motivo = motivo;
+        Motivo = motivo;
     }
 
-    public Date getFechaPedida() {
-        return fechaPedida;
+    public String getFechaCreada() {
+        return FechaCreada;
     }
 
-    public void setFechaPedida(Date fechaPedida) {
-        this.fechaPedida = fechaPedida;
+    public void setFechaCreada(String fechaCreada) {
+        FechaCreada = fechaCreada;
     }
 
-    public DateTime getFechaElaborada() {
-        return fechaElaborada;
+    public String getEstado() {
+        return Estado;
     }
 
-    public void setFechaElaborada(DateTime fechaElaborada) {
-        this.fechaElaborada = fechaElaborada;
+    public void setEstado(String estado) {
+        Estado = estado;
     }
 
-    public Time getHoraSolicitud() {
-        return horaSolicitud;
+    public String getRespuesta() {
+        return Respuesta;
     }
 
-    public void setHoraSolicitud(Time horaSolicitud) {
-        this.horaSolicitud = horaSolicitud;
+    public void setRespuesta(String respuesta) {
+        Respuesta = respuesta;
     }
 
-    public Time getHoraInicio() {
-        return horaInicio;
+    public String getSalida() {
+        return Salida;
     }
 
-    public void setHoraInicio(Time horaInicio) {
-        this.horaInicio = horaInicio;
+    public void setSalida(String salida) {
+        Salida = salida;
     }
 
-    public Time getHoraFin() {
-        return horaFin;
-    }
-
-    public void setHoraFin(Time horaFin) {
-        this.horaFin = horaFin;
-    }
-
-    public Time getRegreso() {
+    public String getRegreso() {
         return Regreso;
     }
 
-    public void setRegreso(Time regreso) {
+    public void setRegreso(String regreso) {
         Regreso = regreso;
     }
 
-    public Solicitud(int idSolicitud, int idEmpleado, String estado, String motivo, Date fechaPedida, DateTime fechaElaborada, Time horaSolicitud, Time horaInicio, Time horaFin, Time regreso) {
-        this.idSolicitud = idSolicitud;
-        this.idEmpleado = idEmpleado;
-        this.estado = estado;
-        this.motivo = motivo;
-        this.fechaPedida = fechaPedida;
-        this.fechaElaborada = fechaElaborada;
-        this.horaSolicitud = horaSolicitud;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+    public Date getDias_solicitado() {
+        return dias_solicitado;
+    }
+
+    public void setDias_solicitado(Date dias_solicitado) {
+        this.dias_solicitado = dias_solicitado;
+    }
+
+    public Time getHoraDeSalida() {
+        return horaDeSalida;
+    }
+
+    public void setHoraDeSalida(Time horaDeSalida) {
+        this.horaDeSalida = horaDeSalida;
+    }
+
+    public Time getHoraderegreso() {
+        return Horaderegreso;
+    }
+
+    public void setHoraderegreso(Time horaderegreso) {
+        Horaderegreso = horaderegreso;
+    }
+
+    public Solicitud(int id, String motivo, String fechaCreada, String estado, String respuesta, String salida, String regreso, Date dias_solicitado, Time horaDeSalida, Time horaderegreso) {
+        this.id = id;
+        Motivo = motivo;
+        FechaCreada = fechaCreada;
+        Estado = estado;
+        Respuesta = respuesta;
+        Salida = salida;
         Regreso = regreso;
+        this.dias_solicitado = dias_solicitado;
+        this.horaDeSalida = horaDeSalida;
+        Horaderegreso = horaderegreso;
+    }
+
+    public Solicitud() {
     }
 }

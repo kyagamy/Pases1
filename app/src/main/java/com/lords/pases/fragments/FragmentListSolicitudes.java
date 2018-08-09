@@ -118,24 +118,25 @@ public class FragmentListSolicitudes extends Fragment {
 
     private void LoadData() {
         try {
-            String stmt = "exec consultarMaestro 'tec'";
+            String stmt = "exec consultarMaestro '131313'";
             GenericAsyncDBTask gdbc = new GenericAsyncDBTask(getActivity(), new AsyncTaskCallback() {
                 @Override
                 public void onTaskCompleted(ResultSet r) {
                     try {
                         while (r.next()){
-                            listaSolis.add(
-                                    new Solicitud(
-                                            r.getInt("idSolicitud"),
-                                            0,
-                                            r.getString("Estado"),
-                                            r.getString("Motivo"),
-                                            r.getDate("FechaPedida"),
-                                            null,
-                                            null,
-                                            r.getTime("HoraInicio"),
-                                            r.getTime("HoraFin"),
-                                            r.getTime("Regreso")));
+                            Solicitud s = new Solicitud();
+                            s.setId(r.getInt("ID"));
+                            s.setMotivo(r.getString("Motivo"));
+                            s.setFechaCreada(r.getString(3));
+                            s.setDias_solicitado(r.getDate(3));
+                            s.setHorapedidaSalida(r.getTime(5));
+                            s.setHoraPedidaRegreso(r.getTime(4));
+                            s.setEstado(r.getString(7));
+                            s.setRespuesta(r.getString(8));
+                            s.setSalida(r.getString(10));
+                            s.setRegreso(  r.getString(9));
+
+                            listaSolis.add(s);
                             adapterSoli.notifyDataSetChanged();
                         }
 
