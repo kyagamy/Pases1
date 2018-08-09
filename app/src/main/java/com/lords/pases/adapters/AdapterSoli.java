@@ -76,17 +76,20 @@ public class   AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCa
     }
 
     public class ViewHolderCategory extends RecyclerView.ViewHolder {
-        TextView name;
+        TextView title;
+        TextView subtitle;
+
         TextView optionButton;
 
         public ViewHolderCategory(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.tv_subtitle_item);
+            title = itemView.findViewById(R.id.tv_title_item);
+            subtitle=itemView.findViewById(R.id.tv_subtitle_item);
             optionButton = itemView.findViewById(R.id.textViewOptions);
         }
 
         public void setData(int index) {
-            name.setText(list.get(index).getMotivo());
+            title.setText(list.get(index).getMotivo());
         }
     }
 }

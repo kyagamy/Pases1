@@ -124,19 +124,19 @@ public class FragmentListSolicitudes extends Fragment {
                 public void onTaskCompleted(ResultSet r) {
                     try {
                         while (r.next()){
-                            Solicitud s = new Solicitud();
-                            s.setId(r.getInt("ID"));
-                            s.setMotivo(r.getString("Motivo"));
-                            s.setFechaCreada(r.getString(3));
-                            s.setDias_solicitado(r.getDate(3));
-                            s.setHorapedidaSalida(r.getTime(5));
-                            s.setHoraPedidaRegreso(r.getTime(4));
-                            s.setEstado(r.getString(7));
-                            s.setRespuesta(r.getString(8));
-                            s.setSalida(r.getString(10));
-                            s.setRegreso(  r.getString(9));
+                            Solicitud auxSolicitud = new Solicitud();
+                            auxSolicitud.setId(r.getInt("ID"));
+                            auxSolicitud.setMotivo(r.getString("Motivo"));
+                            auxSolicitud.setFechaCreada(r.getString(3));
+                            auxSolicitud.setDias_solicitado(r.getDate(3));
+                            auxSolicitud.setHorapedidaSalida(r.getTime(5));
+                            auxSolicitud.setHoraPedidaRegreso(r.getTime(4));
+                            auxSolicitud.setEstado(r.getString(7));
+                            auxSolicitud.setRespuesta(r.getString(8));
+                            auxSolicitud.setSalida(r.getString(10));
+                            auxSolicitud.setRegreso(  r.getString(9));
 
-                            listaSolis.add(s);
+                            listaSolis.add(auxSolicitud);
                             adapterSoli.notifyDataSetChanged();
                         }
 

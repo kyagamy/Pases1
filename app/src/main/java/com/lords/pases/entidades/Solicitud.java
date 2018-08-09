@@ -13,7 +13,7 @@ public class Solicitud {
         int id;
         String Motivo,FechaCreada,Estado,Respuesta,Salida,Regreso;
         Date dias_solicitado;
-        Time horaDeSalida,Horaderegreso,HorapedidaSalida,HoraPedidaRegreso;
+        Time HorapedidaSalida,HoraPedidaRegreso;
 
     public Time getHorapedidaSalida() {
         return HorapedidaSalida;
@@ -96,21 +96,7 @@ public class Solicitud {
         this.dias_solicitado = dias_solicitado;
     }
 
-    public Time getHoraDeSalida() {
-        return horaDeSalida;
-    }
 
-    public void setHoraDeSalida(Time horaDeSalida) {
-        this.horaDeSalida = horaDeSalida;
-    }
-
-    public Time getHoraderegreso() {
-        return Horaderegreso;
-    }
-
-    public void setHoraderegreso(Time horaderegreso) {
-        Horaderegreso = horaderegreso;
-    }
 
     public Solicitud(int id, String motivo, String fechaCreada, String estado, String respuesta, String salida, String regreso, Date dias_solicitado, Time horaDeSalida, Time horaderegreso) {
         this.id = id;
@@ -121,8 +107,7 @@ public class Solicitud {
         Salida = salida;
         Regreso = regreso;
         this.dias_solicitado = dias_solicitado;
-        this.horaDeSalida = horaDeSalida;
-        Horaderegreso = horaderegreso;
+
     }
 
     public Solicitud() {
