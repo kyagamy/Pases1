@@ -124,7 +124,7 @@ public class FragmentListSolicitudes extends Fragment {
                 public void onTaskCompleted(ResultSet r) {
                     try {
                         while (r.next()){
-                            Solicitud auxSolicitud = new Solicitud();
+                            Solicitud auxSolicitud  = new Solicitud();
                             auxSolicitud.setId(r.getInt("ID"));
                             auxSolicitud.setMotivo(r.getString("Motivo"));
                             auxSolicitud.setFechaCreada(r.getString(3));
