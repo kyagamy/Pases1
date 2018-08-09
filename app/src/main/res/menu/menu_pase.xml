@@ -2,16 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu1"
-        android:title="Menu 1 xd" />
+        android:icon="@drawable/ico_add_soli"
+        android:id="@+id/menu_editar"
+        android:title="Editar" />
 
     <item
-        android:id="@+id/menu2"
-        android:title="Menu 2 xd" />
+        android:id="@+id/menu_eliminar"
+        android:title="Eliminar" />
 
     <item
-        android:id="@+id/menu3"
-        android:title="Menu 3 xd" />
+        android:id="@+id/menu_ver_detalles"
+        android:title="Ver Más" />
 
 
 </menu>

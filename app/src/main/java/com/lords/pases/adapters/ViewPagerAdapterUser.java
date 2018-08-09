@@ -10,19 +10,29 @@ import com.lords.pases.fragments.Fragment_Settings;
 import com.lords.pases.fragments.ScannerFragment;
 
 public class ViewPagerAdapterUser   extends FragmentStatePagerAdapter {
-    public ViewPagerAdapterUser(FragmentManager fm) {
+    private String matricula;
+    public ViewPagerAdapterUser(FragmentManager fm,String matricula) {
         super(fm);
+        this.matricula=matricula;
     }
+
+
 
     @Override
     public Fragment getItem(int position) {
+
         switch (position){
             case 2:
+
                 return Fragment_Settings.newInstance();
             case 1:
-               return FragmentAddSoli.newInstance();
+                FragmentAddSoli  f1=new FragmentAddSoli();
+                f1.setMatri(matricula);
+               return f1 ;
             case 0:
-               return new FragmentListSolicitudes();
+                FragmentListSolicitudes f0= new FragmentListSolicitudes();
+                f0.setMatri(matricula);
+               return f0;
             case 3:
                 return new ScannerFragment();
         }

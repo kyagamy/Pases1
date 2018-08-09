@@ -1,5 +1,7 @@
 package com.lords.pases;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
@@ -20,6 +22,7 @@ public class MainPases extends AppCompatActivity {
     BottomNavigationView navigation;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +32,14 @@ public class MainPases extends AppCompatActivity {
         navigation = findViewById(R.id.navigation);
         this.mainViewPager = findViewById(R.id.viewPager);
 
+        //get Data from SP
+        SharedPreferences sharedPref= getSharedPreferences("myPref", Context.MODE_PRIVATE);
+
+
+        String matri =sharedPref.getString("matri",null);
+
         //Inicializacion de variables
-        mvpa = new ViewPagerAdapterUser(getSupportFragmentManager());
+        mvpa = new ViewPagerAdapterUser(getSupportFragmentManager(),matri);
         //listeners
         mainViewPager.setAdapter(mvpa);
 

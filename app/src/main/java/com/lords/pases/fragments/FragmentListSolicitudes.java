@@ -37,16 +37,18 @@ public class FragmentListSolicitudes extends Fragment {
     AdapterSoli adapterSoli;
     Spinner s1;
     ArrayAdapter <String> adapterFiltro;
+    private  String matri;
     public FragmentListSolicitudes() {
         // Required empty public constructor
     }
 
+    public void setMatri(String matri) {
+        this.matri = matri;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         LoadData();
     }
 
@@ -71,11 +73,6 @@ public class FragmentListSolicitudes extends Fragment {
         adapterFiltro= new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item,optionsSpinner);
 
         adapterSoli= new AdapterSoli(listaSolis,view.getContext());
-        //Solicitud solitest= new Solicitud();
-
-       // listaSolis.add(solitest);
-        //listaSolis.add(solitest);
-        //consultar
 
 
         rvSolis.setAdapter(adapterSoli);
@@ -118,7 +115,7 @@ public class FragmentListSolicitudes extends Fragment {
 
     private void LoadData() {
         try {
-            String stmt = "exec consultarMaestro '131313'";
+            String stmt = "exec consultarMaestro '"+matri+"'";
             GenericAsyncDBTask gdbc = new GenericAsyncDBTask(getActivity(), new AsyncTaskCallback() {
                 @Override
                 public void onTaskCompleted(ResultSet r) {

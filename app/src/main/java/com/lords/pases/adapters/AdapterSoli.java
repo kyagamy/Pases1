@@ -47,13 +47,13 @@ public class   AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCa
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.menu1:
+                            case R.id.menu_editar:
                                 //handle menu1 click
                                 break;
-                            case R.id.menu2:
+                            case R.id.menu_eliminar:
                                 //handle menu2 click
                                 break;
-                            case R.id.menu3:
+                            case R.id.menu_ver_detalles:
                                 //handle menu3 click
                                 break;
                         }
@@ -89,7 +89,9 @@ public class   AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCa
         }
 
         public void setData(int index) {
-            title.setText(list.get(index).getMotivo());
+            title.setText("Solicitud de: "+list.get(index).getFechaCreada().substring(0,11));
+            subtitle.setText("Estatus: "+list.get(index).getEstado());
+
         }
     }
 }
