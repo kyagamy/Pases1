@@ -1,6 +1,9 @@
 package com.lords.pases.fragments;
 
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.loopwiki.qrsacnner.R;
 import com.lords.pases.adapters.AdapterSoli;
@@ -34,6 +38,7 @@ public class FragmentListSolicitudes extends Fragment {
     AdapterSoli adapterSoli;
     Spinner s1;
     ArrayAdapter <String> adapterFiltro;
+    Dialog dialogSeeMore;
     private  String matri;
     public FragmentListSolicitudes() {
         // Required empty public constructor
@@ -46,7 +51,15 @@ public class FragmentListSolicitudes extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         LoadData();
+        showPopup();
+
     }
 
     @Override
@@ -59,6 +72,19 @@ public class FragmentListSolicitudes extends Fragment {
         rvSolis=view.findViewById(R.id.rv_solis);
         s1= view.findViewById(R.id.spinner_filtro_solis);
 
+        dialogSeeMore= new Dialog(getContext());
+        dialogSeeMore.setContentView(R.layout.custompopup);
+        TextView txtclose= dialogSeeMore.findViewById(R.id.txtclose);
+        txtclose.setText("X");
+
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSeeMore.dismiss();
+            }
+        });
+        dialogSeeMore.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 
 
         listaSolis= new ArrayList<>();
@@ -67,7 +93,7 @@ public class FragmentListSolicitudes extends Fragment {
         optionsSpinner.add("Aceptadas");
         optionsSpinner.add("Rechazadas");
         optionsSpinner.add("Pendientes");
-        adapterFiltro= new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item,optionsSpinner);
+        adapterFiltro= new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item,optionsSpinner);
 
         adapterSoli= new AdapterSoli(listaSolis,view.getContext());
 
@@ -83,6 +109,7 @@ public class FragmentListSolicitudes extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0:
+
                         break;
                     case 1:
                         break;
@@ -117,6 +144,7 @@ public class FragmentListSolicitudes extends Fragment {
                 @Override
                 public void onTaskCompleted(ResultSet r) {
                     try {
+                        listaSolis.clear();//limpamos por si se vuele a crear el fragment
                         while (r.next()){
                             Solicitud auxSolicitud  = new Solicitud();
                             auxSolicitud.setId(r.getInt("ID"));
@@ -133,20 +161,21 @@ public class FragmentListSolicitudes extends Fragment {
                             listaSolis.add(auxSolicitud);
                             adapterSoli.notifyDataSetChanged();
                         }
-
-
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
             });
             gdbc.execute(stmt);
-
-
         } catch (Exception ex) {
             ex.printStackTrace();
 
         }
+    }
+
+
+    public void showPopup() {
+        dialogSeeMore.show();
     }
 
 
