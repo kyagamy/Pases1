@@ -1,7 +1,6 @@
 package com.lords.pases.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,9 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.loopwiki.qrsacnner.LoginActivity;
 import com.loopwiki.qrsacnner.R;
-import com.lords.pases.MainPases;
 import com.lords.pases.adapters.AdapterSoli;
 import com.lords.pases.entidades.Solicitud;
 import com.lords.pases.interfaces.AsyncTaskCallback;
@@ -129,9 +126,9 @@ public class FragmentListSolicitudes extends Fragment {
                             auxSolicitud.setHorapedidaSalida(r.getTime(5));
                             auxSolicitud.setHoraPedidaRegreso(r.getTime(4));
                             auxSolicitud.setEstado(r.getString(7));
-                            auxSolicitud.setRespuesta(r.getString(8));
-                            auxSolicitud.setSalida(r.getString(10));
-                            auxSolicitud.setRegreso(  r.getString(9));
+                            auxSolicitud.setRespuesta(r.getString(8)==null ?"":r.getString(8));
+                            auxSolicitud.setSalida(r.getString(10)==null ?"":r.getString(10));
+                            auxSolicitud.setRegreso(  r.getString(9)==null ?"":r.getString(9));
 
                             listaSolis.add(auxSolicitud);
                             adapterSoli.notifyDataSetChanged();

@@ -2,10 +2,8 @@ package com.lords.pases.util;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 
-import com.lords.pases.MainPases;
 import com.lords.pases.interfaces.AsyncTaskCallback;
 
 import java.sql.ResultSet;
@@ -37,7 +35,11 @@ public class GenericAsyncDBTask   extends AsyncTask<String,ResultSet,ResultSet> 
         super.onPostExecute(s);
         stopDialog();
 
-        listener.onTaskCompleted(s);
+        try {
+            listener.onTaskCompleted(s);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 

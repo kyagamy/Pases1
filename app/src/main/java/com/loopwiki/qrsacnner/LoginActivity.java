@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.VideoView;
+
 import com.lords.pases.MainPases;
 import com.lords.pases.interfaces.AsyncTaskCallback;
 import com.lords.pases.util.GenericAsyncDBTask;
@@ -23,7 +24,7 @@ import java.sql.SQLException;
 public class LoginActivity extends AppCompatActivity {
     VideoView bg;
     EditText etUser, etPassword;
-    Button button;
+    Button button,buttonRegister;
 
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -54,6 +55,16 @@ public class LoginActivity extends AppCompatActivity {
         etUser = findViewById(R.id.et_user);
         etPassword = findViewById(R.id.et_pwd);
         bg = findViewById(R.id.bgVideoView);
+        buttonRegister =findViewById(R.id.button_register);
+
+
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent register = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(register);
+            }
+        });
 
 
         String path = "android.resource://" + getPackageName() + "/" + R.raw.bg;

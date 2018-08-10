@@ -37,7 +37,6 @@ public class FragmentAddSoli extends Fragment {
     private String matri;
     String fecha, hora1, hora2;
 
-
     public FragmentAddSoli() {
         // Required empty public constructor
     }
@@ -47,7 +46,6 @@ public class FragmentAddSoli extends Fragment {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,10 +55,12 @@ public class FragmentAddSoli extends Fragment {
         setDate = view.findViewById(R.id.btn_set_date);
         setTimeStart = view.findViewById(R.id.btn_set_time_start);
         setTimeEnd = view.findViewById(R.id.btn_set_time_end);
-        motivo= view.findViewById(R.id.et_motivo);
+        motivo = view.findViewById(R.id.et_motivo);
 
 
-        dpd = new DatePickerDialog(getContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            dpd = new DatePickerDialog(getContext());
+        }
         TimePickerDialog.OnTimeSetListener timeListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -103,32 +103,28 @@ public class FragmentAddSoli extends Fragment {
             }
         });
 
-        dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                fecha = year + "-" + month + "-" + dayOfMonth;
-                setDate.setText(fecha);
-            }
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    fecha = year + "-" + month + "-" + dayOfMonth;
+                    setDate.setText(fecha);
+                }
+            });
+        }
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fecha==null || hora1==null|| hora2==null ){
+                if (fecha == null || hora1 == null || hora2 == null) {
                     Toast.makeText(getActivity().getBaseContext(), "Debes de llenar todos los campos", Toast.LENGTH_LONG).show();
-
-
-                }
-                else {
-                    if (motivo.getText().toString().length() < 15   ){
+                } else {
+                    if (motivo.getText().toString().length() < 15) {
                         Toast.makeText(getActivity().getBaseContext(), "El motivo debe de tener almenos 15 caracteres", Toast.LENGTH_LONG).show();
-
-                    }
-                    else {
+                    } else {
                         insert(motivo.getText().toString());
                     }
                 }
-
 
             }
         });

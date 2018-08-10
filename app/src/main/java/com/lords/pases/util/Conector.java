@@ -2,26 +2,22 @@ package com.lords.pases.util;
 
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.util.Log;
 
 import com.lords.pases.entidades.Solicitud;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 
 public class Conector {
-    static     String ip = Constants.serverIP;
+    static     String ip = Constants.INSTANCE.getServerIP();
     static String classs = "net.sourceforge.jtds.jdbc.Driver";
-    static String db = Constants.databaseName;
-    static String un = Constants.databaseSA;
-    static String password = Constants.databasePassword;
+    static String db = Constants.INSTANCE.getDatabaseName();
+    static String un = Constants.INSTANCE.getDatabaseSA();
+    static String password = Constants.INSTANCE.getDatabasePassword();
     Connection con;
 
     public Conector() throws SQLException, ClassNotFoundException {
