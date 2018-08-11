@@ -1,12 +1,11 @@
 package com.lords.pases.fragments;
 
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,27 +23,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class FragmentAddSoli extends Fragment {
-
-
+public class FragmentDialogEdit extends DialogFragment {
     Button send, setDate, setTimeStart, setTimeEnd;
     EditText motivo;
     DatePickerDialog dpd;
     TimePickerDialog tpd, tpd2;
-    private String matri;
+
     String fecha, hora1, hora2;
+    public  int idSolicitud;
 
-    public FragmentAddSoli() {
-        // Required empty public constructor
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
-    public void setMatri(String matri) {
-        this.matri = matri;
+    public void setHora1(String hora1) {
+        this.hora1 = hora1;
     }
 
+    public void setHora2(String hora2) {
+        this.hora2 = hora2;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +54,7 @@ public class FragmentAddSoli extends Fragment {
         setTimeStart = view.findViewById(R.id.btn_set_time_start);
         setTimeEnd = view.findViewById(R.id.btn_set_time_end);
         motivo = view.findViewById(R.id.et_motivo);
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -77,10 +76,15 @@ public class FragmentAddSoli extends Fragment {
         };
 
 
-        tpd = new TimePickerDialog(getContext(), timeListener, Calendar.HOUR, Calendar.MINUTE, false);
-        tpd2 = new TimePickerDialog(getContext(), timeListener2, Calendar.HOUR, Calendar.MINUTE, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tpd = new TimePickerDialog(getContext(), timeListener, Calendar.HOUR, Calendar.MINUTE, false);
+            tpd2 = new TimePickerDialog(getContext(), timeListener2, Calendar.HOUR, Calendar.MINUTE, false);
+        }
 
 
+        setTimeStart.setText("Hora de salida ("+ hora1+")");
+        setTimeStart.setText("Hora de regreso ("+ hora2+")");
+        setDate.setText("Fecha solicitada ("+fecha+")");
         setTimeStart.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -112,6 +116,7 @@ public class FragmentAddSoli extends Fragment {
                 }
             });
         }
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,24 +126,27 @@ public class FragmentAddSoli extends Fragment {
                     if (motivo.getText().toString().length() < 15) {
                         Toast.makeText(getActivity().getBaseContext(), "El motivo debe de tener almenos 15 caracteres", Toast.LENGTH_LONG).show();
                     } else {
-                        insert(motivo.getText().toString());
+                        edit(motivo.getText().toString());
                     }
                 }
+
             }
         });
+
         return view;
     }
 
-    public void insert(String motivo) {
+
+    public void edit(String motivo) {
         try {
-            String stmt = "exec crearSolicitud '" + motivo + "',3,'" + fecha + "','" + hora1 + "','" + hora2 + "','" + matri + "'";
+            String stmt = "exec modificarSolicitudMaestro '" + motivo + "','" + fecha + "','" + hora1 + "','" + hora2 + "'," + idSolicitud;
             GenericAsyncDBTask gdbc = new GenericAsyncDBTask(getActivity(), new AsyncTaskCallback() {
                 @Override
                 public void onTaskCompleted(ResultSet r) {
                     try {
                         String msj;
                         if (r.next()) {
-                            msj = "Se ha agregado la solicitud correctamente";
+                            msj = "Se ha editado correctamente";
                         } else {
                             msj = "Ha ocurrido un error";
                         }

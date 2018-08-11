@@ -19,14 +19,14 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
 
     private ArrayList<Solicitud> list;
     private Context mCtx;
-    FragmentListSolicitudes FLS;
+    FragmentListSolicitudes fLS;
 
 
 
-    public AdapterSoli(ArrayList list, Context c,FragmentListSolicitudes FLS) {
+    public AdapterSoli(ArrayList list, Context c, FragmentListSolicitudes FLS) {
         this.list = list;
         mCtx = c;
-        this.FLS=FLS;
+        this.fLS = FLS;
     }
 
     @Override
@@ -44,30 +44,50 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
                 //creating a popup menu
                 PopupMenu popup = new PopupMenu(mCtx, holder.optionButton);
                 //inflating menu from xml resource
-                popup.inflate(R.menu.menu_pase);
+
                 //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menu_editar:
-                                //handle menu1 click
-                                break;
-                            case R.id.menu_eliminar:
-                                //handle menu2 click
-                                FLS.delete(list.get(position).getId());
-                                break;
-                            case R.id.menu_ver_detalles:
-                                FLS.showPopup(list.get(position).fechaCreada,
-                                        list.get(position).getDias_solicitado().toString(),
-                                        list.get(position).getHorapedidaSalida().toString()+"-"+list.get(position).getHoraPedidaRegreso().toString(),
-                                        list.get(position).getSalida()+"-"+list.get(position).getRegreso().toString(),list.get(position).getMotivo(),list.get(position).getRespuesta(),list.get(position).getEstado()
-                                        );
-                                break;
+                if  (list.get(position).getEstado().equals("Pendiente")){
+                    popup.inflate(R.menu.menu_pase);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.menu_editar:
+                                    fLS.showEditFragment( list.get(position).getDias_solicitado().toString(),list.get(position).getHorapedidaSalida().toString(),list.get(position).getHoraPedidaRegreso().toString());
+                                    break;
+                                case R.id.menu_eliminar:
+                                    //handle menu2 click
+                                    fLS.delete(list.get(position).getId());
+                                    break;
+                                case R.id.menu_ver_detalles:
+                                    fLS.showPopup(list.get(position).fechaCreada,
+                                            list.get(position).getDias_solicitado().toString(),
+                                            list.get(position).getHorapedidaSalida().toString() + "-" + list.get(position).getHoraPedidaRegreso().toString(),
+                                            list.get(position).getSalida() + "-" + list.get(position).getRegreso().toString(), list.get(position).getMotivo(), list.get(position).getRespuesta(), list.get(position).getEstado()
+                                    );
+                                    break;
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
+                }
+                else{
+                    popup.inflate(R.menu.menu_pase_inactivo);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+
+                                    fLS.showPopup(list.get(position).fechaCreada,
+                                            list.get(position).getDias_solicitado().toString(),
+                                            list.get(position).getHorapedidaSalida().toString() + "-" + list.get(position).getHoraPedidaRegreso().toString(),
+                                            list.get(position).getSalida() + "-" + list.get(position).getRegreso().toString(), list.get(position).getMotivo(), list.get(position).getRespuesta(), list.get(position).getEstado()
+                                    );
+                            return false;
+                        }
+                    });
+
+                }
+
                 //displaying the popup
                 popup.show();
 
@@ -102,8 +122,6 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
 
         }
     }
-
-
 
 
 }

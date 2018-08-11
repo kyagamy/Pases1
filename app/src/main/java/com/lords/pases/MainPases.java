@@ -2,16 +2,14 @@ package com.lords.pases;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.zxing.integration.android.IntentIntegrator;
 import com.loopwiki.qrsacnner.R;
-import com.loopwiki.qrsacnner.ScannerActivity;
 import com.lords.pases.adapters.ViewPagerAdapterUser;
 
 public class MainPases extends AppCompatActivity {
@@ -20,6 +18,8 @@ public class MainPases extends AppCompatActivity {
     ViewPagerAdapterUser mvpa;
     MenuItem prevItem = null;
     BottomNavigationView navigation;
+
+
 
 
 
@@ -58,11 +58,9 @@ public class MainPases extends AppCompatActivity {
                         mainViewPager.setCurrentItem(2);
                         return true;
                     case R.id.nav_scan:
-                        new IntentIntegrator(MainPases.this).setCaptureActivity(ScannerActivity.class).initiateScan();
-                        mainViewPager.setCurrentItem(0);
+                      //  new IntentIntegrator(MainPases.this).setCaptureActivity(ScannerActivity.class).initiateScan();
+                        mainViewPager.setCurrentItem(3);
                         return true;
-
-
                 }
 
                 return false;

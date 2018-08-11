@@ -45,6 +45,7 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
     Spinner s1;
     ArrayAdapter<String> adapterFiltro;
     Dialog dialogSeeMore;
+
     private String matri;
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -195,7 +196,6 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
                             auxSolicitud.setRespuesta(r.getString(8) == null ? "" : r.getString(8));
                             auxSolicitud.setSalida(r.getString(10) == null ? "" : r.getString(10));
                             auxSolicitud.setRegreso(r.getString(9) == null ? "" : r.getString(9));
-
                             listaSolis.add(auxSolicitud);
                             adapterSoli.notifyDataSetChanged();
                             mSwipeRefreshLayout.setRefreshing(false);
@@ -210,6 +210,18 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
             ex.printStackTrace();
 
         }
+    }
+
+
+    public  void showEditFragment(String fecha,String time1, String time2){
+        FragmentDialogEdit newFragment = new FragmentDialogEdit();
+
+        newFragment.setFecha(fecha);
+        newFragment.setHora1(time1);
+        newFragment.setHora2(time2);
+        newFragment.show(getFragmentManager(),"String");
+
+
     }
 
 
