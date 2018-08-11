@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentListSolicitudes extends Fragment {
+public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLayout.OnRefreshListener {
 
     ArrayList<String> optionsSpinner;
     ArrayList<Solicitud> listaSolis;
@@ -45,7 +46,7 @@ public class FragmentListSolicitudes extends Fragment {
     ArrayAdapter<String> adapterFiltro;
     Dialog dialogSeeMore;
     private String matri;
-
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     //elemets of pupup menú
 
@@ -78,7 +79,6 @@ public class FragmentListSolicitudes extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_list_solicitudes, container, false);
-
         //leer elementos
         rvSolis = view.findViewById(R.id.rv_solis);
         s1 = view.findViewById(R.id.spinner_filtro_solis);
@@ -88,7 +88,6 @@ public class FragmentListSolicitudes extends Fragment {
         dialogSeeMore.setContentView(R.layout.custompopup);
         TextView txtclose = dialogSeeMore.findViewById(R.id.txtclose);
         txtclose.setText("X");
-
         tvmCreador = dialogSeeMore.findViewById(R.id.tv_creado_por);
         tvmFechaCreado = dialogSeeMore.findViewById(R.id.modal_fecha_creado);
         tvmFechaSolicita = dialogSeeMore.findViewById(R.id.tv_fechapedida);
@@ -97,8 +96,6 @@ public class FragmentListSolicitudes extends Fragment {
         etmMotivo = dialogSeeMore.findViewById(R.id.editText_menu_motivo);
         etmRespuesta = dialogSeeMore.findViewById(R.id.editText_respuestamenu);
         estatus = dialogSeeMore.findViewById(R.id.btn_estatus);
-
-
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,8 +103,6 @@ public class FragmentListSolicitudes extends Fragment {
             }
         });
         dialogSeeMore.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-
         listaSolis = new ArrayList<>();
         optionsSpinner = new ArrayList<>();
         optionsSpinner.add("Todas");
@@ -115,13 +110,39 @@ public class FragmentListSolicitudes extends Fragment {
         optionsSpinner.add("Rechazadas");
         optionsSpinner.add("Pendientes");
         adapterFiltro = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, optionsSpinner);
-
         adapterSoli = new AdapterSoli(listaSolis, view.getContext(), this);
-
-
         rvSolis.setAdapter(adapterSoli);
         rvSolis.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         s1.setAdapter(adapterFiltro);
+
+
+
+
+
+        //swipe rehrsh
+        mSwipeRefreshLayout =  view.findViewById(R.id.simpleSwipeRefreshLayout);
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+//        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+
+
+        mSwipeRefreshLayout.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                if(mSwipeRefreshLayout != null) {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                }
+                // TODO Fetching data from server
+               LoadData();
+            }
+        });
+
 
 
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -129,7 +150,6 @@ public class FragmentListSolicitudes extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-
                         break;
                     case 1:
                         break;
@@ -178,6 +198,7 @@ public class FragmentListSolicitudes extends Fragment {
 
                             listaSolis.add(auxSolicitud);
                             adapterSoli.notifyDataSetChanged();
+                            mSwipeRefreshLayout.setRefreshing(false);
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -236,17 +257,14 @@ public class FragmentListSolicitudes extends Fragment {
             });
 
             new AlertDialog.Builder(getActivity())
-                    .setTitle("Title")
-                    .setMessage("Do you really want to whatever?")
+                    .setTitle("Confirmación")
+                    .setMessage("¿Realmente deseas eleminar está solicitud?")
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
                         public void onClick(DialogInterface dialog, int whichButton) {
                             gdbc.execute(stmt);
                         }})
                     .setNegativeButton(android.R.string.no, null).show();
-
-
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -255,5 +273,9 @@ public class FragmentListSolicitudes extends Fragment {
     }
 
 
+    @Override
+    public void onRefresh() {
+        LoadData();
+    }
 }
 
