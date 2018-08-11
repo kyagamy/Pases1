@@ -1,7 +1,9 @@
 package com.lords.pases.fragments;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,8 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopwiki.qrsacnner.R;
 import com.lords.pases.adapters.AdapterSoli;
@@ -32,14 +37,22 @@ import java.util.ArrayList;
  */
 public class FragmentListSolicitudes extends Fragment {
 
-    ArrayList <String> optionsSpinner;
+    ArrayList<String> optionsSpinner;
     ArrayList<Solicitud> listaSolis;
     RecyclerView rvSolis;
     AdapterSoli adapterSoli;
     Spinner s1;
-    ArrayAdapter <String> adapterFiltro;
+    ArrayAdapter<String> adapterFiltro;
     Dialog dialogSeeMore;
-    private  String matri;
+    private String matri;
+
+
+    //elemets of pupup menú
+
+    TextView tvmCreador, tvmFechaCreado, tvmFechaSolicita, tvmHorasSoli, tvmHorasCumplidas;
+    EditText etmMotivo, etmRespuesta;
+    Button estatus;
+
     public FragmentListSolicitudes() {
         // Required empty public constructor
     }
@@ -55,11 +68,9 @@ public class FragmentListSolicitudes extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         LoadData();
-        showPopup();
-
     }
 
     @Override
@@ -69,13 +80,24 @@ public class FragmentListSolicitudes extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_solicitudes, container, false);
 
         //leer elementos
-        rvSolis=view.findViewById(R.id.rv_solis);
-        s1= view.findViewById(R.id.spinner_filtro_solis);
+        rvSolis = view.findViewById(R.id.rv_solis);
+        s1 = view.findViewById(R.id.spinner_filtro_solis);
 
-        dialogSeeMore= new Dialog(getContext());
+        //elementosModal
+        dialogSeeMore = new Dialog(getContext());
         dialogSeeMore.setContentView(R.layout.custompopup);
-        TextView txtclose= dialogSeeMore.findViewById(R.id.txtclose);
+        TextView txtclose = dialogSeeMore.findViewById(R.id.txtclose);
         txtclose.setText("X");
+
+        tvmCreador = dialogSeeMore.findViewById(R.id.tv_creado_por);
+        tvmFechaCreado = dialogSeeMore.findViewById(R.id.modal_fecha_creado);
+        tvmFechaSolicita = dialogSeeMore.findViewById(R.id.tv_fechapedida);
+        tvmHorasSoli = dialogSeeMore.findViewById(R.id.tv_horas1);
+        tvmHorasCumplidas = dialogSeeMore.findViewById(R.id.tv_horas2);
+        etmMotivo = dialogSeeMore.findViewById(R.id.editText_menu_motivo);
+        etmRespuesta = dialogSeeMore.findViewById(R.id.editText_respuestamenu);
+        estatus = dialogSeeMore.findViewById(R.id.btn_estatus);
+
 
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,16 +108,15 @@ public class FragmentListSolicitudes extends Fragment {
         dialogSeeMore.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-
-        listaSolis= new ArrayList<>();
-        optionsSpinner= new ArrayList<>();
+        listaSolis = new ArrayList<>();
+        optionsSpinner = new ArrayList<>();
         optionsSpinner.add("Todas");
         optionsSpinner.add("Aceptadas");
         optionsSpinner.add("Rechazadas");
         optionsSpinner.add("Pendientes");
-        adapterFiltro= new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item,optionsSpinner);
+        adapterFiltro = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, optionsSpinner);
 
-        adapterSoli= new AdapterSoli(listaSolis,view.getContext());
+        adapterSoli = new AdapterSoli(listaSolis, view.getContext(), this);
 
 
         rvSolis.setAdapter(adapterSoli);
@@ -103,11 +124,10 @@ public class FragmentListSolicitudes extends Fragment {
         s1.setAdapter(adapterFiltro);
 
 
-
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 0:
 
                         break;
@@ -131,32 +151,30 @@ public class FragmentListSolicitudes extends Fragment {
         });
 
 
-
         return view;
     }
 
 
-
     private void LoadData() {
         try {
-            String stmt = "exec consultarMaestro '"+matri+"'";
+            String stmt = "exec consultarMaestro '" + matri + "'";
             GenericAsyncDBTask gdbc = new GenericAsyncDBTask(getActivity(), new AsyncTaskCallback() {
                 @Override
                 public void onTaskCompleted(ResultSet r) {
                     try {
                         listaSolis.clear();//limpamos por si se vuele a crear el fragment
-                        while (r.next()){
-                            Solicitud auxSolicitud  = new Solicitud();
+                        while (r.next()) {
+                            Solicitud auxSolicitud = new Solicitud();
                             auxSolicitud.setId(r.getInt("ID"));
                             auxSolicitud.setMotivo(r.getString("Motivo"));
                             auxSolicitud.setFechaCreada(r.getString(3));
                             auxSolicitud.setDias_solicitado(r.getDate(3));
                             auxSolicitud.setHorapedidaSalida(r.getTime(5));
                             auxSolicitud.setHoraPedidaRegreso(r.getTime(4));
-                            auxSolicitud.setEstado(r.getString(7));
-                            auxSolicitud.setRespuesta(r.getString(8)==null ?"":r.getString(8));
-                            auxSolicitud.setSalida(r.getString(10)==null ?"":r.getString(10));
-                            auxSolicitud.setRegreso(  r.getString(9)==null ?"":r.getString(9));
+                            auxSolicitud.setEstado(r.getString(7) == null ? "" : r.getString(7));
+                            auxSolicitud.setRespuesta(r.getString(8) == null ? "" : r.getString(8));
+                            auxSolicitud.setSalida(r.getString(10) == null ? "" : r.getString(10));
+                            auxSolicitud.setRegreso(r.getString(9) == null ? "" : r.getString(9));
 
                             listaSolis.add(auxSolicitud);
                             adapterSoli.notifyDataSetChanged();
@@ -174,10 +192,67 @@ public class FragmentListSolicitudes extends Fragment {
     }
 
 
-    public void showPopup() {
+    public void showPopup(String fechaCreada, String fechaPedida, String horas1, String horas2, String motivo, String respuesta, String estatus) {
+        tvmCreador.setText("YO mero");
+        tvmFechaCreado.setText(fechaCreada);
+        tvmFechaSolicita.setText(fechaPedida);
+        tvmHorasSoli.setText(horas1);
+        tvmHorasCumplidas.setText(horas2);
+        etmRespuesta.setText(respuesta);
+        etmMotivo.setText(motivo);
+        this.estatus.setText(estatus);
+        if (estatus.equals("Aceptado")) {
+            this.estatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_aprovado, 0, 0, 0);
+        } else if (estatus.equals("Pendiente")) {
+            this.estatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ico_caution, 0, 0, 0);
+        } else {
+            this.estatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_denied, 0, 0, 0);
+        }
         dialogSeeMore.show();
     }
 
+
+
+    public void delete(int id) {
+        try {
+            final String stmt = "exec eliminarSolicitud "+id;
+            final GenericAsyncDBTask gdbc = new GenericAsyncDBTask(getActivity(), new AsyncTaskCallback() {
+                @Override
+                public void onTaskCompleted(ResultSet r) {
+                    try {
+                        String msj;
+                        if (r.next()) {
+                            msj = "Se ha eliminado la solicitud correctamente";
+                            LoadData();
+                        } else {
+                            msj = "Ha ocurrido un error";
+                        }
+                        Toast.makeText(getActivity().getBaseContext(), msj, Toast.LENGTH_LONG).show();
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Title")
+                    .setMessage("Do you really want to whatever?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            gdbc.execute(stmt);
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 
 }
