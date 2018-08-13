@@ -162,7 +162,6 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
                         break;
 
                 }
-
             }
 
             @Override
@@ -213,13 +212,15 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
     }
 
 
-    public  void showEditFragment(String fecha,String time1, String time2){
+    public  void showEditFragment(String fecha,String time1, String time2,int id,String motivo){
         FragmentDialogEdit newFragment = new FragmentDialogEdit();
 
         newFragment.setFecha(fecha);
         newFragment.setHora1(time1);
         newFragment.setHora2(time2);
-        newFragment.show(getFragmentManager(),"String");
+        newFragment.idSolicitud=id;
+        newFragment.motivotxt=motivo;
+        newFragment.show(getFragmentManager(),"Editar");
 
 
     }

@@ -22,7 +22,6 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
     FragmentListSolicitudes fLS;
 
 
-
     public AdapterSoli(ArrayList list, Context c, FragmentListSolicitudes FLS) {
         this.list = list;
         mCtx = c;
@@ -46,14 +45,14 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
                 //inflating menu from xml resource
 
                 //adding click listener
-                if  (list.get(position).getEstado().equals("Pendiente")){
+                if (list.get(position).getEstado().equals("Pendiente")) {
                     popup.inflate(R.menu.menu_pase);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.menu_editar:
-                                    fLS.showEditFragment( list.get(position).getDias_solicitado().toString(),list.get(position).getHorapedidaSalida().toString(),list.get(position).getHoraPedidaRegreso().toString());
+                                    fLS.showEditFragment(list.get(position).getDias_solicitado().toString(), list.get(position).getHorapedidaSalida().toString(), list.get(position).getHoraPedidaRegreso().toString(), list.get(position).getId(),list.get(position).getMotivo());
                                     break;
                                 case R.id.menu_eliminar:
                                     //handle menu2 click
@@ -70,25 +69,21 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
                             return false;
                         }
                     });
-                }
-                else{
+                } else {
                     popup.inflate(R.menu.menu_pase_inactivo);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
 
-                                    fLS.showPopup(list.get(position).fechaCreada,
-                                            list.get(position).getDias_solicitado().toString(),
-                                            list.get(position).getHorapedidaSalida().toString() + "-" + list.get(position).getHoraPedidaRegreso().toString(),
-                                            list.get(position).getSalida() + "-" + list.get(position).getRegreso().toString(), list.get(position).getMotivo(), list.get(position).getRespuesta(), list.get(position).getEstado()
-                                    );
+                            fLS.showPopup(list.get(position).fechaCreada,
+                                    list.get(position).getDias_solicitado().toString(),
+                                    list.get(position).getHorapedidaSalida().toString() + "-" + list.get(position).getHoraPedidaRegreso().toString(),
+                                    list.get(position).getSalida() + "-" + list.get(position).getRegreso().toString(), list.get(position).getMotivo(), list.get(position).getRespuesta(), list.get(position).getEstado()
+                            );
                             return false;
                         }
                     });
-
                 }
-
-                //displaying the popup
                 popup.show();
 
 

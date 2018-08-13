@@ -112,7 +112,6 @@ public class LoginActivity extends AppCompatActivity {
                 public void onTaskCompleted(ResultSet r) {
                     try {
                         if (r.next()) {
-
                             editor.putString("matri", user1);
                             editor.commit();
                             Intent i = new Intent(LoginActivity.this, MainPases.class);
@@ -120,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(i);
                             makeMsk("Bienvenido :)");
                         } else {
-                            makeMsk("Ha habido algun error con la autentificación La NASA no te deja entrar :c");
+                            makeMsk("Ha habido algún error con la autentificación La NASA no te deja entrar :c");
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();

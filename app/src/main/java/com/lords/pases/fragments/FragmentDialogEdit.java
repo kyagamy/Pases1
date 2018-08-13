@@ -29,7 +29,7 @@ public class FragmentDialogEdit extends DialogFragment {
     DatePickerDialog dpd;
     TimePickerDialog tpd, tpd2;
 
-    String fecha, hora1, hora2;
+    String fecha, hora1, hora2,motivotxt;
     public  int idSolicitud;
 
     public void setFecha(String fecha) {
@@ -54,6 +54,7 @@ public class FragmentDialogEdit extends DialogFragment {
         setTimeStart = view.findViewById(R.id.btn_set_time_start);
         setTimeEnd = view.findViewById(R.id.btn_set_time_end);
         motivo = view.findViewById(R.id.et_motivo);
+        motivo.setText(motivotxt);
 
 
 
