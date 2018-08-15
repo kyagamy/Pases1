@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.lords.pases.interfaces.AsyncTaskCallback;
+import com.lords.pases.util.Conector;
 import com.lords.pases.util.GenericAsyncDBTask;
 
 import java.sql.ResultSet;
@@ -100,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
                     try {
                         String msj;
                         if (r.next()) {
-                            msj = "Se ha registrado correctamente Espere confirmación";
+                            msj =  Conector.msj(r);;
                         } else {
                             msj = "Ha ocurrido un error";
                         }

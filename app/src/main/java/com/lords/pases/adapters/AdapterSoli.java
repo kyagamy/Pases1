@@ -52,7 +52,7 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.menu_editar:
-                                    fLS.showEditFragment(list.get(position).getDias_solicitado().toString(), list.get(position).getHorapedidaSalida().toString(), list.get(position).getHoraPedidaRegreso().toString(), list.get(position).getId(),list.get(position).getMotivo());
+                                    fLS.showEditFragment(list.get(position).getDias_solicitado().toString(), list.get(position).getHorapedidaSalida().toString(), list.get(position).getHoraPedidaRegreso().toString(), list.get(position).getId(), list.get(position).getMotivo());
                                     break;
                                 case R.id.menu_eliminar:
                                     //handle menu2 click
@@ -63,7 +63,7 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
                                             list.get(position).getDias_solicitado().toString(),
                                             list.get(position).getHorapedidaSalida().toString() + "-" + list.get(position).getHoraPedidaRegreso().toString(),
                                             list.get(position).getSalida() + "-" + list.get(position).getRegreso().toString(), list.get(position).getMotivo(), list.get(position).getRespuesta(), list.get(position).getEstado()
-                                    );
+                                            , list.get(position).getId());
                                     break;
                             }
                             return false;
@@ -79,7 +79,7 @@ public class AdapterSoli extends RecyclerView.Adapter<AdapterSoli.ViewHolderCate
                                     list.get(position).getDias_solicitado().toString(),
                                     list.get(position).getHorapedidaSalida().toString() + "-" + list.get(position).getHoraPedidaRegreso().toString(),
                                     list.get(position).getSalida() + "-" + list.get(position).getRegreso().toString(), list.get(position).getMotivo(), list.get(position).getRespuesta(), list.get(position).getEstado()
-                            );
+                                    , list.get(position).getId());
                             return false;
                         }
                     });

@@ -8,6 +8,7 @@ import com.lords.pases.entidades.Solicitud;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -114,5 +115,9 @@ solo pide idsolicitud y la hora de regreso 'yyyy-mm-dd hh:*/
         return true;
     }
 
+
+    public static  String msj(ResultSet r) throws SQLException {
+        return r.getInt("ERROR")==1 ?"Ha ocurrido un error: "+ r.getString("MensajeError"):"Se ha ejecutado correctamente";
+    }
 
 }

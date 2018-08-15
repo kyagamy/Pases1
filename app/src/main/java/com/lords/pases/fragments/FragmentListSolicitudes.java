@@ -23,10 +23,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.loopwiki.qrsacnner.R;
+import com.loopwiki.qrsacnner.ScannerActivity;
 import com.lords.pases.adapters.AdapterSoli;
 import com.lords.pases.entidades.Solicitud;
 import com.lords.pases.interfaces.AsyncTaskCallback;
+import com.lords.pases.util.Conector;
 import com.lords.pases.util.GenericAsyncDBTask;
 
 import java.sql.ResultSet;
@@ -36,7 +39,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLayout.OnRefreshListener {
+public class FragmentListSolicitudes extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     ArrayList<String> optionsSpinner;
     ArrayList<Solicitud> listaSolis;
@@ -45,6 +48,8 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
     Spinner s1;
     ArrayAdapter<String> adapterFiltro;
     Dialog dialogSeeMore;
+    int currentid;
+
 
     private String matri;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -53,7 +58,7 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
 
     TextView tvmCreador, tvmFechaCreado, tvmFechaSolicita, tvmHorasSoli, tvmHorasCumplidas;
     EditText etmMotivo, etmRespuesta;
-    Button estatus;
+    Button estatus, openSalidaRegistro;
 
     public FragmentListSolicitudes() {
         // Required empty public constructor
@@ -97,6 +102,8 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
         etmMotivo = dialogSeeMore.findViewById(R.id.editText_menu_motivo);
         etmRespuesta = dialogSeeMore.findViewById(R.id.editText_respuestamenu);
         estatus = dialogSeeMore.findViewById(R.id.btn_estatus);
+        openSalidaRegistro = dialogSeeMore.findViewById(R.id.register_salida);
+
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,11 +124,8 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
         s1.setAdapter(adapterFiltro);
 
 
-
-
-
         //swipe rehrsh
-        mSwipeRefreshLayout =  view.findViewById(R.id.simpleSwipeRefreshLayout);
+        mSwipeRefreshLayout = view.findViewById(R.id.simpleSwipeRefreshLayout);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
 //        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
@@ -136,14 +140,13 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
             @Override
             public void run() {
 
-                if(mSwipeRefreshLayout != null) {
+                if (mSwipeRefreshLayout != null) {
                     mSwipeRefreshLayout.setRefreshing(true);
                 }
                 // TODO Fetching data from server
-               LoadData();
+                LoadData();
             }
         });
-
 
 
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -170,9 +173,17 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
             }
         });
 
+        openSalidaRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new IntentIntegrator(getActivity()).setCaptureActivity(ScannerActivity.class).initiateScan();
+            }
+        });
+
 
         return view;
     }
+
 
 
     private void LoadData() {
@@ -181,8 +192,8 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
             GenericAsyncDBTask gdbc = new GenericAsyncDBTask(getActivity(), new AsyncTaskCallback() {
                 @Override
                 public void onTaskCompleted(ResultSet r) {
-                    try {
-                        listaSolis.clear();//limpamos por si se vuele a crear el fragment
+                        try {
+                            listaSolis.clear();//limpamos por si se vuele a crear el fragment
                         while (r.next()) {
                             Solicitud auxSolicitud = new Solicitud();
                             auxSolicitud.setId(r.getInt("ID"));
@@ -212,22 +223,24 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
     }
 
 
-    public  void showEditFragment(String fecha,String time1, String time2,int id,String motivo){
+    public void showEditFragment(String fecha, String time1, String time2, int id, String motivo) {
         FragmentDialogEdit newFragment = new FragmentDialogEdit();
 
         newFragment.setFecha(fecha);
         newFragment.setHora1(time1);
         newFragment.setHora2(time2);
-        newFragment.idSolicitud=id;
-        newFragment.motivotxt=motivo;
-        newFragment.show(getFragmentManager(),"Editar");
+        newFragment.idSolicitud = id;
+        newFragment.motivotxt = motivo;
+        newFragment.show(getFragmentManager(), "Editar");
 
 
     }
 
 
-    public void showPopup(String fechaCreada, String fechaPedida, String horas1, String horas2, String motivo, String respuesta, String estatus) {
-        tvmCreador.setText("YO mero");
+    public void showPopup(String fechaCreada, String fechaPedida, String horas1, String horas2, String motivo, String respuesta, String estatus,int id) {
+
+
+        tvmCreador.setText("Custom user");
         tvmFechaCreado.setText(fechaCreada);
         tvmFechaSolicita.setText(fechaPedida);
         tvmHorasSoli.setText(horas1);
@@ -235,28 +248,36 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
         etmRespuesta.setText(respuesta);
         etmMotivo.setText(motivo);
         this.estatus.setText(estatus);
+        this.openSalidaRegistro.setVisibility(View.VISIBLE);//por si se oculto previamente
         if (estatus.equals("Aceptado")) {
-            this.estatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_aprovado, 0, 0, 0);
+            this.estatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_aprovado, 0, 0, 0);
         } else if (estatus.equals("Pendiente")) {
-            this.estatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ico_caution, 0, 0, 0);
+            this.estatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_caution, 0, 0, 0);
+            this.openSalidaRegistro.setVisibility(View.GONE);
         } else {
-            this.estatus.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_denied, 0, 0, 0);
-        }
-        dialogSeeMore.show();
-    }
 
+
+            this.estatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_denied, 0, 0, 0);
+        }
+
+
+
+
+        dialogSeeMore.show();
+        this.currentid=id;
+    }
 
 
     public void delete(int id) {
         try {
-            final String stmt = "exec eliminarSolicitud "+id;
+            final String stmt = "exec eliminarSolicitud " + id;
             final GenericAsyncDBTask gdbc = new GenericAsyncDBTask(getActivity(), new AsyncTaskCallback() {
                 @Override
                 public void onTaskCompleted(ResultSet r) {
                     try {
                         String msj;
                         if (r.next()) {
-                            msj = "Se ha eliminado la solicitud correctamente";
+                            msj = Conector.msj(r);
                             LoadData();
                         } else {
                             msj = "Ha ocurrido un error";
@@ -276,7 +297,8 @@ public class FragmentListSolicitudes extends Fragment  implements SwipeRefreshLa
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             gdbc.execute(stmt);
-                        }})
+                        }
+                    })
                     .setNegativeButton(android.R.string.no, null).show();
         } catch (Exception e) {
             e.printStackTrace();

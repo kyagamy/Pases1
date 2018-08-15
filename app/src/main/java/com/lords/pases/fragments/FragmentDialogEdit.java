@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.loopwiki.qrsacnner.R;
 import com.lords.pases.interfaces.AsyncTaskCallback;
+import com.lords.pases.util.Conector;
 import com.lords.pases.util.GenericAsyncDBTask;
 
 import java.sql.ResultSet;
@@ -147,7 +148,7 @@ public class FragmentDialogEdit extends DialogFragment {
                     try {
                         String msj;
                         if (r.next()) {
-                            msj = "Se ha editado correctamente";
+                            msj = Conector.msj(r);
                         } else {
                             msj = "Ha ocurrido un error";
                         }
