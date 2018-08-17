@@ -23,7 +23,7 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     Button button1;
-    EditText etNombre, etApellido, etphono, etPassword, etPasswordCheck;
+    EditText etNombre, etApellido, etPhone, etPassword, etPasswordCheck,etMatri;
     Spinner spinerArea;
     ArrayList<String> arrayListAreas;
     Map<Integer, String> mapita;
@@ -34,10 +34,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
-        etNombre = findViewById(R.id.et_registro_name);
+        etMatri=findViewById(R.id.et_register_matri);
+        etNombre = findViewById(R.id.et_registro_nombre);
         etApellido = findViewById(R.id.et_reg_last_name);
-        etphono = findViewById(R.id.et_reg_fono);
+        etPhone = findViewById(R.id.et_reg_fono);
         etPassword = findViewById(R.id.editText_reg_pass);
         etPasswordCheck = findViewById(R.id.editText_reg_pass2);
         spinerArea = findViewById(R.id.spinner_area);
@@ -55,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (etApellido.getText().toString().equals("") || etNombre.getText().toString().equals("") || etPassword.getText().toString().equals("") || etPasswordCheck.getText().toString().equals("") || etphono.getText().toString().equals("")) {
+                if (etApellido.getText().toString().equals("") || etNombre.getText().toString().equals("") || etPassword.getText().toString().equals("") || etPasswordCheck.getText().toString().equals("") || etPhone.getText().toString().equals("")) {
                     Toast.makeText(getBaseContext(), "Se deben de llenar todos los campos", Toast.LENGTH_LONG).show();
                 } else if (!etPassword.getText().toString().equals(etPasswordCheck.getText().toString())) {
                     Toast.makeText(getBaseContext(), "Las contraseña no coinciden", Toast.LENGTH_LONG).show();
@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void register() {
         try {
-            String stmt = "exec crearTrabajador '" + etNombre.getText().toString() + "','" + etApellido.getText().toString() + "','" + etphono.getText().toString() + "',3,'" + spinerArea.getSelectedItemId() + "','" + etPassword.getText().toString() + "'";
+            String stmt = "exec crearTrabajador '" + etNombre.getText().toString() + "','" + etApellido.getText().toString() + "','" + etPhone.getText().toString() + "',3,'" + spinerArea.getSelectedItemId() + "','" + etMatri.getText().toString() + "','"+ etPassword.getText().toString()+"'";
             GenericAsyncDBTask gdbc = new GenericAsyncDBTask(this, new AsyncTaskCallback() {
                 @Override
                 public void onTaskCompleted(ResultSet r) {
