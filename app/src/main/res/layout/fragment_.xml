@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     tools:context="com.lords.pases.fragments.Fragment_Settings">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Aqui se supone que irá alguna cosa x de configuración" />
 
+    <Button
+        android:id="@+id/btn_session_close"
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        android:text="Cerrar Sesión" />
 </FrameLayout>
